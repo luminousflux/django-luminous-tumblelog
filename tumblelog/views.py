@@ -10,7 +10,7 @@ class PostListView(ListView):
     paginate_by = POSTS_PER_PAGE
 
     def get_queryset(self):
-        return Post.objects.public()
+        return Post.objects.public().select_generic_related()
 
     def get_context_data(self, **kwargs):
         context = super(PostListView, self).get_context_data(**kwargs)
@@ -25,7 +25,7 @@ class PostDetailView(DetailView):
     context_object_name = 'post'
 
     def get_queryset(self):
-        return Post.objects.public()
+        return Post.objects.public().select_generic_related()
 
     def get_context_data(self, **kwargs):
         context = super(PostDetailView, self).get_context_data(**kwargs)
