@@ -30,6 +30,14 @@ Release Notes
 
 Until 1.0, consider this to be beta software with unstable APIs.
 
+0.3
+---
+
+*Not yet released; changes listed are available in master*
+
+* Adds Code post type and syntax highlighting helpers (`commit <https://github.com/chuckharmston/django-tumblelog/commit/2384c300cdcff7f807df1b7af080a3f66539b36f>`_)
+* Implements custom ``QuerySet`` for ``Post`` objects, adding a method for performing an optimized fetch of all objects related by ``GenericForeignKey``. Reduces number of queries in PostListView from ``n+1`` to ``<num post types>+1``
+
 0.2
 ---
 
@@ -48,4 +56,4 @@ Until 1.0, consider this to be beta software with unstable APIs.
 
 *Released on 2012-03-04*
 
-* First releases
+* First release
