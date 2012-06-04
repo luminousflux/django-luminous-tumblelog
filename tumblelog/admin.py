@@ -2,7 +2,7 @@ from copy import deepcopy
 
 from django.contrib import admin
 
-from tumblelog.settings import POST_TYPES, USE_TAGGIT
+from tumblelog.settings import EDIT_META, POST_TYPES, USE_TAGGIT
 from tumblelog.util import import_model
 
 
@@ -83,6 +83,7 @@ class PostTypeAdmin(admin.ModelAdmin):
 
 # Dynamically generate admin class from values passed to TumblelogMeta
 for post_type in POST_TYPES:
+    is_contrib = post_type.startswith('tumblelog.')
     model = import_model(post_type)
     admin_cls = type(
         PostTypeAdmin.__name__,
@@ -92,9 +93,16 @@ for post_type in POST_TYPES:
 
     # Slightly hacky; add taggit manager to the meta fieldset for all the
     # tumblelog.contrib post types
-    if post_type and post_type.startswith('tumblelog.') and USE_TAGGIT:
+    if post_type and is_contrib and USE_TAGGIT:
         meta_fields = [i for i in admin_cls.fieldsets[1][1]['fields']]
         meta_fields.append('tags')
+        admin_cls.fieldsets[1][1]['fields'] = meta_fields
+
+    # Slightly hacky; add meta_description field to the meta fieldset for all
+    # the tumblelog.contrib post types
+    if post_type and is_contrib and EDIT_META:
+        meta_fields = [i for i in admin_cls.fieldsets[1][1]['fields']]
+        meta_fields.append('meta_description')
         admin_cls.fieldsets[1][1]['fields'] = meta_fields
 
     admin.site.register(model, admin_cls)

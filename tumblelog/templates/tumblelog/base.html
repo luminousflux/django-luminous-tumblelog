@@ -5,6 +5,7 @@
     <head>
         <title>{% block title %}My Cat Pictures{% endblock title %}</title>
         <meta charset="utf-8" />
+        {% block meta_description %}{% endblock meta_description %}
         <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="{% url 'tumblelog:feed' %}" />
         {% block rainbowjs_css %}{% endblock rainbowjs_css %}
     </head>

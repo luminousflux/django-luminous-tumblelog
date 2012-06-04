@@ -1,5 +1,9 @@
 {% extends "tumblelog/base.html" %}
 
+{% block meta_description %}
+    <meta name="description" content="{{ post.fields.meta_description }}" />
+{% endblock meta_description %}
+
 {% block main %}
     {% include "tumblelog/post.html" %}
 {% endblock main %}

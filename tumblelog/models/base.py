@@ -161,6 +161,12 @@ class BasePostType(PostMetaMixin, models.Model):
     )
     post = generic.GenericRelation(Post, content_type_field='post_type', \
         object_id_field='object_id')
+    meta_description = models.TextField(_('Meta Description'),
+        blank=True,
+        null=True,
+        editable=True,
+        help_text=_('Recommended length: 150-160 characters'),
+    )
 
     __metaclass__ = PostTypeMetaclass
 

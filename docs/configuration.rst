@@ -66,6 +66,19 @@ Example:
 
     TUMBLELOG_USE_TAGGIT = True
 
+TUMBLELOG_EDIT_META
+-------------------
+
+Optional; a boolean indicating whether you'd like post authors to be able to edit a post's ``<meta type="description" />`` tag.
+
+Default: ``True``
+
+Example:
+
+::
+
+    TUMBLELOG_EDIT_META = False
+
 TUMBLELOG_TEXTFIELD_HELP_TEXT
 -----------------------------
 

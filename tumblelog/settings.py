@@ -9,6 +9,7 @@ POST_TYPES = getattr(settings, 'TUMBLELOG_POST_TYPES', [
     'tumblelog.contrib.photo.Image',
 ])
 POSTS_PER_PAGE = getattr(settings, 'TUMBLELOG_POSTS_PER_PAGE', 10)
+EDIT_META = getattr(settings, 'TUMBLELOG_EDIT_META', True)
 
 # Should we use django-taggit?
 TAGGIT_INSTALLED = 'taggit' in settings.INSTALLED_APPS

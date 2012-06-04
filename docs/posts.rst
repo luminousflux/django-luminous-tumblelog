@@ -50,6 +50,7 @@ Fields
 - ``date_added`` - automatically created when a post is first added
 - ``date_modified`` - automatically updated when a post is saved
 - ``date_published`` - defines the date and time when a post is published
+- ``meta_description`` - a value for use in the ``<meta type="description" />`` tag
 
 Properties
 ----------
