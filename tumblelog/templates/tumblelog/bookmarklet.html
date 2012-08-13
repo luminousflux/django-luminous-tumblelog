@@ -1,18 +1,16 @@
-{% load url from future %}
+{% load url from future %}{% load static %}
 <html>
     <head><title>{{site.name}} bookmarklet</title>
+        <link rel="stylesheet" href="{% static 'tumblelog/bookmarklet.css' %}" />
         <style>
-            #switcher div.form {
-                display: none;
-            }
             {% for name in forms.keys %}
             #switcher.{{name}} div.form.{{name}} {
                 display: block;
             }
-            {% endfor %}
-            p [name=author] {
-                display: none;
+            #switcher.{{name}} ul.tabs li.{{name}} {
+                border-bottom: 1px solid transparent;
             }
+            {% endfor %}
         </style>
     </head>
     <body>
@@ -28,26 +26,27 @@
                 window.setTimeout(window.close, 2000);
             </script>
         {% else %}
-            <ul >
+            <div id="switcher" class="{{mode}}">
+            <ul class="tabs">
             {% for name in forms.keys %}
-            <li {% ifequal name mode %}class="active"{% endifequal %} onclick="document.getElementById('switcher').setAttribute('class','{{name}}');">{{name}}</li>
+            <li class="{{name}} {% ifequal name mode %}active{% endifequal %}" onclick="document.getElementById('switcher').setAttribute('class','{{name}}');">{{name}}</li>
             {% endfor %}
             </ul>
+            <br class="clear" />
 
             <form method="post" action="{% url 'tumblelog:bookmarklet.html' %}">
                 <input type="hidden" name="proper" value="1" />
                 <input type="hidden" name="url" value="{{url}}" />
                 <input type="hidden" name="images" value="{{images}}" />
                 <input type="hidden" name="quote" value="{{quote}}" />
-            <div id="switcher" class="{{mode}}">
                 {% for name, form in forms.iteritems %}
                 <div class="form {{name}} {% ifequal mode name %}active{%endifequal%}">
                     {{form.as_p}}
                     <input type="submit" value="{{name}}" name="submit" />
                 </div>
                 {% endfor %}
-            </div>
             </form>
+            </div>
         {% endif %}
         {% endif %}
     </body>

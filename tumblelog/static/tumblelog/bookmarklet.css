@@ -1,0 +1,25 @@
+ul.tabs {
+    margin: 0;
+    padding: 0;
+    border-left: 1px solid black;
+    height: 1.6em;
+}
+ul.tabs li {
+    line-height: 1em;
+    margin: 0;
+    padding: .25em 10px;
+    float: left;
+    border-right: 1px solid black;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    cursor: pointer;
+}
+br.clear {
+    clear: both;
+}
+#switcher div.form {
+    display: none;
+}
+p [name=author] {
+    display: none;
+}

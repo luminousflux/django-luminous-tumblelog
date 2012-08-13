@@ -9,6 +9,7 @@ from tumblelog.models import Post, PARENT_MODEL
 from tumblelog.forms import form_for_type, ExtendableForm
 from tumblelog.settings import POSTS_PER_PAGE
 from tumblelog.bookmarklet import generate_bookmarklink
+import httplib2
 
 from html2text import html2text
 import copy
@@ -67,9 +68,12 @@ def bookmarklet_window(request):
         
         if hasattr(settings,'EMBEDLY_KEY') and not proper:
             client = Embedly(settings.EMBEDLY_KEY)
-            oe = client.oembed(url, maxwidth=None if not hasattr(settings,'EMBEDLY_MAXWIDTH') else settings.EMBEDLY_MAXWIDTH)
-            if not oe.error:
-                oembed = oe
+            try:
+                oe = client.oembed(url, maxwidth=None if not hasattr(settings,'EMBEDLY_MAXWIDTH') else settings.EMBEDLY_MAXWIDTH)
+                if not oe.error:
+                    oembed = oe
+            except httplib2.ServerNotFoundError, e:
+                pass # Can't connect to server.
 
 
         if oembed:
