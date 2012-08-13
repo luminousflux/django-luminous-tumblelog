@@ -1,0 +1,6 @@
+{% load markup %}
+<div class="entry {{ post.post_type }}">
+    <h2><a href="{{ post.get_absolute_url }}">{{ post.fields.title }}</a></h2>
+    {{post.data.html|safe}}
+     <div class="date" pubdate="pubdate" datetime="{{ post.published_at|date:"m-d-Y" }}">{{ post.published_at|timesince }} ago by {{post.author}}</div>
+</div>

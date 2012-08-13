@@ -1,5 +1,8 @@
 Installation
 ============
+
+[THIS DOES NOT WORK YET]
+
 Installing tumblelog is simple with `pip <http://www.pip-installer.org/en/latest/index.html>`_.
 
 ::
@@ -14,8 +17,6 @@ Add tumblelog to ``INSTALLED APPS`` in your settings module:
 ::
 
     INSTALLED_APPS = [
-        'django.contrib.contenttypes',
-        ...
         'tumblelog',
     ]
 
@@ -28,29 +29,16 @@ Create the necessary database tables, using either ``syncdb`` or ``migrate`` (if
 
 Add a :ref:`TUMBLELOG_POST_TYPES <tumblelog_post_types_setting>` setting to your settings module, e.g.
 
-::
-
-    TUMBLELOG_POST_TYPES = [
-        'tumblelog.Text',
-        'tumblelog.Image',
-        'recipes.Recipe',
-    ]
-
-You may add additional post typesTo further customize tumblelog, you may want to :doc:`add additional settings </configuration>`.
-
 Finally, include the tumblelog URLconf to your ``urls`` module. The regex may be modified as you wish, though the ``tumblelog`` namespace must be maintained.
 
 ::
 
     url(r'^tumblelog/', include('tumblelog.urls', namespace='tumblelog')),
 
-Requirements
-------------
-
-Django 1.4 is required (for `list filters <https://docs.djangoproject.com/en/dev/ref/contrib/admin/#django.contrib.admin.ModelAdmin.list_filter>`_), and three contrib modules must be installed: ``django.contrib.admin``, ``django.contrib.auth``, and ``django.contrib.contenttypes``.
-
 Dependencies
 ------------
+
+[THIS IS OUTDATED]
 
 Tumblelog has two dependencies:
 
@@ -60,22 +48,5 @@ Tumblelog has two dependencies:
 Source Code
 -----------
 
-tumblelog is developed on GitHub, where you can fork the repository, `browse the code <https://github.com/chuckharmston/django-tumblelog>`_, and `report issues <https://github.com/chuckharmston/django-tumblelog/issues>`_.
+tumblelog is developed on GitHub, where you can fork the repository, `browse the code and report issues at <https://github.com/luminousflux/django-luminous-tumblelog>`_.
 
-You can use pip to install the bleeding-edge code from the repository:
-
-::
-
-    $ pip install -e git+https://github.com/chuckharmston/django-tumblelog.git#egg=django-tumblelog
-
-Alternatively, you can `download a tarball <https://github.com/chuckharmston/django-tumblelog/tarball/master>`_ or clone the repository:
-
-::
-
-    $ git clone git://github.com/chuckharmston/django-tumblelog
-
-And install using ``setup.py``:
-
-::
-
-    $ python setup.py install

@@ -1,4 +1,0 @@
-{% load i18n %}
-
-{{ post.fields.description|linebreaks }}
-<p>{% trans "Download:" %} <a href="{{ MEDIA_URL }}{{ post.fields.file_file }}">{{ post.fields.file_link_text }}</a></p>

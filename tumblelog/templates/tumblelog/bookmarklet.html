@@ -1,0 +1,54 @@
+{% load url from future %}
+<html>
+    <head><title>{{site.name}} bookmarklet</title>
+        <style>
+            #switcher div.form {
+                display: none;
+            }
+            {% for name in forms.keys %}
+            #switcher.{{name}} div.form.{{name}} {
+                display: block;
+            }
+            {% endfor %}
+            p [name=author] {
+                display: none;
+            }
+        </style>
+    </head>
+    <body>
+        {% if not proper %}
+        The bookmarklet is either loading or stuck. If its stuck, try the current bookmarklet version:
+
+        <a href="{{bookmarklink}}">{{site.name}} bookmarklet</a>
+        {% else %}
+        {% if success %}
+            Saved!
+
+            <script>
+                window.setTimeout(window.close, 2000);
+            </script>
+        {% else %}
+            <ul >
+            {% for name in forms.keys %}
+            <li {% ifequal name mode %}class="active"{% endifequal %} onclick="document.getElementById('switcher').setAttribute('class','{{name}}');">{{name}}</li>
+            {% endfor %}
+            </ul>
+
+            <form method="post" action="{% url 'tumblelog:bookmarklet.html' %}">
+                <input type="hidden" name="proper" value="1" />
+                <input type="hidden" name="url" value="{{url}}" />
+                <input type="hidden" name="images" value="{{images}}" />
+                <input type="hidden" name="quote" value="{{quote}}" />
+            <div id="switcher" class="{{mode}}">
+                {% for name, form in forms.iteritems %}
+                <div class="form {{name}} {% ifequal mode name %}active{%endifequal%}">
+                    {{form.as_p}}
+                    <input type="submit" value="{{name}}" name="submit" />
+                </div>
+                {% endfor %}
+            </div>
+            </form>
+        {% endif %}
+        {% endif %}
+    </body>
+</html>

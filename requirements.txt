@@ -1,0 +1,7 @@
+python-oembed==0.2.1
+PIL
+django-extensions
+django
+django-jsonfield
+html2text
+embedly

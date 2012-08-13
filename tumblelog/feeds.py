@@ -24,7 +24,7 @@ class PostFeed(Feed):
         return item.get_absolute_url()
 
     def item_description(self, item):
-        return render_to_string(item.fields.rss_template, {
+        return render_to_string(item.rss_template, {
             'post': item,
             'obj': item,
             'post_type': slugify(item.fields.__class__.__name__),

@@ -1,23 +1,31 @@
 from setuptools import setup, find_packages
 from tumblelog import __version__
 
+# source: https://bitbucket.org/kumar303/velcro
+def gen_install_specs(requirements_file):
+    reqfile = open(requirements_file, 'r')
+    for line in reqfile:
+        line = line.strip()
+        if not line:
+            continue
+        if line.startswith('#'):
+            continue
+        yield line
+
 setup(
-    name='django-tumblelog',
+    name='django-luminous-tumblelog',
     version=__version__,
     description='A simple and extensible tumblelog engine for Django',
     keywords='django, blog, tumblelog, tumblr',
-    author='Chuck Harmston',
-    author_email='chuck@chuckharmston.com',
-    url='https://github.com/chuckharmston/django-tumblelog',
+    author='Markus "fin" Hametner',
+    author_email='fin+tumblelog@fin.io',
+    url='https://github.com/luminousflux/django-luminous-tumblelog',
     license='MIT',
     package_dir={
         'tumblelog': 'tumblelog',
     },
     packages=find_packages(),
-    install_requires=[
-        'python-oembed==0.2.1',
-        'PIL',
-    ],
+    install_requires=[spec for spec in gen_install_specs("./requirements.txt")],
     classifiers=[
         "Development Status :: 4 - Beta",
         "Environment :: Web Environment",

@@ -7,27 +7,24 @@ Jason Kottke `defined <http://www.kottke.org/05/10/tumblelogs/>`_ tumblelogs as:
 
 Perhaps the best implementation of this model is `Tumblr <http://tumblr.com>`_, a simple hosted tumblelog service that allows you to post text snippets, photos, quotes, links, chat logs, audio files, or video files. While an excellent service, it is a bit limiting; post formats are restricted to those seven things. If you would like a standard format to your recipes or code snippets, you're out of luck. 
 
-``django-tumblelog`` is an attempt to provide more flexibility to this format by giving you full control over each post type.
+``django-luminous-tumblelog`` is an attempt to provide more flexibility to this format.
+
+It is based on ``django-tumblelog`` but massively simplified and enhanced by bookmarklet functionality.
 
 Features
 --------
 
-* Simple definition of custom post types
-* Large stable of contrib post types to get started quickly.
+* Flexible definition of Post types.
 
-  - Post short text blurbs, long-form articles, links, files, photos, and code snippets.
+* Bookmarklet support
 
-* oEmbed support, for embedding of 3rd-party media in posts.
+  - Post directly from In-Browser links
 
-  - Post directly from Twitter, Flickr, Instagram, Rdio, SoundCloud, Vimeo, YouTube, and GitHub.
-
-* Optional integration with `django-taggit <http://django-taggit.readthedocs.org/>`_
 * Takes full advantage of Django's templating system
 * Agnostic of commenting system and markup format.
 * Internationalization-ready
 * Post scheduling
 * Draft posts
-* Multi-author support with object-level permissions
 * RSS feed
 
 User Guide
@@ -39,15 +36,8 @@ Installing and using tumblelog:
    :maxdepth: 2
 
    installation
-   posts
    templating
    rss
    configuration
-   contrib
-   oembed
    changelog
 
-Third-Party Software
---------------------
-
-`Craig Campbell <http://craig.is/>`_'s `Rainbow.js <http://rainbowco.de/>`_ is packaged with tumblelog, and is used for syntax highlighting for the :ref:`code post type <code_post_type>`. It was released under the Apache 2.0 license, a `copy of which <https://github.com/chuckharmston/django-tumblelog/tree/master/tumblelog/static/tumblelog/rainbow/LICENSE>`_ is included in this repository.

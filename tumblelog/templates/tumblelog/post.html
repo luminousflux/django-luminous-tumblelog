@@ -1,7 +1,6 @@
-<article class="{{ post.post_type_name }}">
-     <header>
+{% load markup %}
+<div class="entry {{ post.post_type }}">
          <h2><a href="{{ post.get_absolute_url }}">{{ post.fields.title }}</a></h2>
-         <time pubdate="pubdate" datetime="{{ post.date_published|date:"m-d-Y" }}">{{ post.date_published|date:"F j, Y" }}</time>
-     </header>
-     {% include post.fields.post_template %}
-</article>
+         {% if post.data.provider_url %}<a href="{{post.data.provider_url}}">{{ post.data.body|markdown }}</a>{% else %}{{post.data.body|markdown}}{%endif%}
+         <div class="date" pubdate="pubdate" datetime="{{ post.published_at|date:"m-d-Y" }}">{{ post.published_at|timesince }} ago by {{post.author}}</div>
+</div>
