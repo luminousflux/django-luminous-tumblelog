@@ -5,3 +5,4 @@ django
 django-jsonfield
 html2text
 embedly
+django-crispy-forms

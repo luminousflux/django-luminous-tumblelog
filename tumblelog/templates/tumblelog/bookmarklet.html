@@ -1,7 +1,9 @@
-{% load url from future %}{% load static %}
+{% load url from future %}{% load static %}{% load crispy_forms_tags %}
 <html>
     <head><title>{{site.name}} bookmarklet</title>
         <link rel="stylesheet" href="{% static 'tumblelog/bookmarklet.css' %}" />
+        <link rel="stylesheet" href="{% static 'uni_form/uni-form.css' %}" />
+        <link rel="stylesheet" href="{% static 'uni_form/blue.uni-form.css' %}" />
         <style>
             {% for name in forms.keys %}
             #switcher.{{name}} div.form.{{name}} {
@@ -34,14 +36,14 @@
             </ul>
             <br class="clear" />
 
-            <form method="post" action="{% url 'tumblelog:bookmarklet.html' %}">
+            <form method="post" action="{% url 'tumblelog:bookmarklet.html' %}" class="uniForm ">
                 <input type="hidden" name="proper" value="1" />
                 <input type="hidden" name="url" value="{{url}}" />
                 <input type="hidden" name="images" value="{{images}}" />
                 <input type="hidden" name="quote" value="{{quote}}" />
                 {% for name, form in forms.iteritems %}
-                <div class="form {{name}} {% ifequal mode name %}active{%endifequal%}">
-                    {{form.as_p}}
+                <div class="form {{name}} {% ifequal mode name %}active{%endifequal%} inlineLabels">
+                    {{form|crispy}}
                     <input type="submit" value="{{name}}" name="submit" />
                 </div>
                 {% endfor %}

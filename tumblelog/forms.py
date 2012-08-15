@@ -2,6 +2,8 @@ from django import forms
 from tumblelog.models import Post
 from tumblelog.types import POST_TYPES
 
+_priority_fields = ['post_type', 'parent','published_at']
+
 class ExtendableForm(forms.ModelForm):
     post_type = forms.fields.Field(widget=forms.widgets.HiddenInput())
 
@@ -39,6 +41,20 @@ class ExtendableForm(forms.ModelForm):
         if not kwargs.get('commit',None)==False:
             instance.save()
         return instance
+
+    def get_fields(self):
+        fields = self._fields
+        sorter = lambda x,y: 0 if (x in _priority_fields == y in _priority_fields) else -1 if x in _priority_fields else 1
+        fields.keyOrder.sort(cmp=sorter)
+        return fields
+    def set_fields(self, value):
+        print 'wtfbbq'
+        self._fields = value
+    def del_fields(self):
+        del self._fields
+
+    fields = property(get_fields, set_fields, del_fields)
+    _fields = None
 
 form_for_type = {}
 for name, fields in POST_TYPES.iteritems():

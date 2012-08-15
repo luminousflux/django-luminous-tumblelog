@@ -13,6 +13,7 @@ from tumblelog.managers import PostManager
 from django.template import loader
 
 assert('django_extensions' in settings.INSTALLED_APPS)
+assert('crispy_forms' in settings.INSTALLED_APPS)
 
 PARENT_MODEL = get_model(*settings.TUMBLELOG_PARENT_MODEL.split('.')) if hasattr(settings,'TUMBLELOG_PARENT_MODEL') else None
 
