@@ -1,5 +1,6 @@
 from setuptools import setup, find_packages
 from tumblelog import __version__
+import re
 
 # source: https://bitbucket.org/kumar303/velcro
 def gen_install_specs(requirements_file):
@@ -22,8 +23,6 @@ dependency_links = []
 for requirement in gen_install_specs('./requirements.txt'):
     match = EDITABLE_REQUIREMENT.match(requirement)
     if match:
-        assert which(match.group('vcs')) is not None, \
-            "VCS '%(vcs)s' must be installed in order to install %(link)s" % match.groupdict()
         install_requires.append("%(package)s==%(version)s" % match.groupdict())
         dependency_links.append(match.group('link'))
     else:
