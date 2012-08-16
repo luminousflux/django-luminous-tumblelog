@@ -10,7 +10,24 @@ def gen_install_specs(requirements_file):
             continue
         if line.startswith('#'):
             continue
-        yield line
+        yield line.strip()
+
+
+# from http://stackoverflow.com/questions/4150423/can-pip-install-dependencies-not-specified-in-setup-py-at-install-time
+EDITABLE_REQUIREMENT = re.compile(r'^-e (?P<link>(?P<vcs>git|svn|hg|bzr).+#egg=(?P<package>.+)-(?P<version>\d(?:\.\d)*))$')
+
+install_requires = []
+dependency_links = []
+
+for requirement in gen_install_specs('./requirements.txt'):
+    match = EDITABLE_REQUIREMENT.match(requirement)
+    if match:
+        assert which(match.group('vcs')) is not None, \
+            "VCS '%(vcs)s' must be installed in order to install %(link)s" % match.groupdict()
+        install_requires.append("%(package)s==%(version)s" % match.groupdict())
+        dependency_links.append(match.group('link'))
+    else:
+        install_requires.append(requirement)
 
 setup(
     name='django-luminous-tumblelog',
@@ -25,7 +42,7 @@ setup(
         'tumblelog': 'tumblelog',
     },
     packages=find_packages(),
-    install_requires=[spec for spec in gen_install_specs("./requirements.txt")],
+    install_requires=install_requires,
     classifiers=[
         "Development Status :: 4 - Beta",
         "Environment :: Web Environment",
@@ -39,4 +56,5 @@ setup(
         "Topic :: Communications",
         "Topic :: Internet :: WWW/HTTP :: Dynamic Content :: News/Diary",
     ],
+    dependency_links = dependency_links,
 )

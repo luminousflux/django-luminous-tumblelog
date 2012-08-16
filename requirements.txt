@@ -5,4 +5,4 @@ django
 django-jsonfield
 html2text
 embedly
--e git+git://github.com/luminousflux/django-crispy-forms.git#egg=django-crispy-forms
+-e git+git://github.com/luminousflux/django-crispy-forms.git#egg=django-crispy-forms-1.1.4
