@@ -66,7 +66,7 @@ def bookmarklet_window(request):
         images = [(x[4:],request.POST[x+'_w'],request.POST[x+'_h'],) for x in request.POST.keys() if x.startswith('img_') and not x[-1] in ('w','h')]
         quote = html2text(request.POST.get('selection',''))
         
-        if hasattr(settings,'EMBEDLY_KEY') and not proper:
+        if hasattr(settings,'EMBEDLY_KEY') and not proper and hasattr(settings,'EMBEDLY_KEY'):
             client = Embedly(settings.EMBEDLY_KEY)
             try:
                 oe = client.oembed(url, maxwidth=None if not hasattr(settings,'EMBEDLY_MAXWIDTH') else settings.EMBEDLY_MAXWIDTH)
