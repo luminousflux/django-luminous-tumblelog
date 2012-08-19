@@ -9,8 +9,8 @@ ACTIVE = False
 try:
     from embedly import Embedly
     ACTIVE = True
-except Exception, e:
-    print e
+except ImportError, e:
+    pass
 
 ACTIVE = ACTIVE and hasattr(settings,'EMBEDLY_KEY') and settings.EMBEDLY_KEY
 
