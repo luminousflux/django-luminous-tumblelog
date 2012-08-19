@@ -1,4 +1,7 @@
 from django.conf import settings
+import logging
+
+logger = logging.getLogger('django')
 
 __all__ = ('ACTIVE', 'get_info',)
 
@@ -21,7 +24,8 @@ def get_info_if_active(url):
         if not oe.error:
             oembed = oe
     except httplib2.ServerNotFoundError, e:
-        print e
         pass # Can't connect to server.
-    print oembed
+    except httplib2.HttpLib2Error, e:
+        logger.warning('tumblelog: %s' % e)
+        pass
     return oembed
