@@ -48,7 +48,6 @@ class ExtendableForm(forms.ModelForm):
         fields.keyOrder.sort(cmp=sorter)
         return fields
     def set_fields(self, value):
-        print 'wtfbbq'
         self._fields = value
     def del_fields(self):
         del self._fields

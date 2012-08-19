@@ -12,6 +12,9 @@ from tumblelog.bookmarklet import generate_bookmarklink
 import httplib2
 
 from html2text import html2text
+
+from tumblelog import embedly_support
+
 import copy
 
 
@@ -56,25 +59,15 @@ def bookmarklet_window(request):
 
     templatevars = {'site': get_current_site(request), 'bookmarklink': generate_bookmarklink(request), 'proper': request.method=='POST',}
     if request.method == 'POST':
-        from embedly import Embedly
-
         oembed = None
-
 
         url = request.POST['url']
         proper = request.POST.get('proper')
         images = [(x[4:],request.POST[x+'_w'],request.POST[x+'_h'],) for x in request.POST.keys() if x.startswith('img_') and not x[-1] in ('w','h')]
         quote = html2text(request.POST.get('selection',''))
-        
-        if hasattr(settings,'EMBEDLY_KEY') and settings.EMBEDLY_KEY and not proper:
-            client = Embedly(settings.EMBEDLY_KEY)
-            try:
-                oe = client.oembed(url, maxwidth=None if not hasattr(settings,'EMBEDLY_MAXWIDTH') else settings.EMBEDLY_MAXWIDTH)
-                if not oe.error:
-                    oembed = oe
-            except httplib2.ServerNotFoundError, e:
-                pass # Can't connect to server.
 
+        if not proper:
+            oembed = embedly_support.get_info_if_active(url)
 
         if oembed:
             mode = oembed['type']
