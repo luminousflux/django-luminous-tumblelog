@@ -57,7 +57,7 @@ def bookmarklet(request):
 def bookmarklet_window(request):
     forms = form_for_type
 
-    templatevars = {'site': get_current_site(request), 'bookmarklink': generate_bookmarklink(request), 'proper': request.method=='POST',}
+    templatevars = {'site': get_current_site(request), 'bookmarklink': generate_bookmarklink(request), 'proper': request.method=='POST', 'typeimages': hasattr(settings,'TUMBLELOG_TYPEIMAGES') and settings.TUMBLELOG_TYPEIMAGES}
     if request.method == 'POST':
         oembed = None
 

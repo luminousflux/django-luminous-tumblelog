@@ -33,7 +33,7 @@
             <ul class="tabs">
             {% for name in forms.keys %}
             <li class="{{name}} {% ifequal name mode %}active{% endifequal %}" onclick="document.getElementById('switcher').setAttribute('class','{{name}}');">
-                <img src="{% static 'types' %}/icon_{{name|lower}}.png" style="height: 1em;vertical-align: middle;" />
+                {% if typeimages %}<img src="{% static 'types' %}/icon_{{name|lower}}.png" style="height: 1em;vertical-align: middle;" />{% endif %}
                 {{name}}
             </li>
             {% endfor %}
