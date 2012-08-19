@@ -32,7 +32,10 @@
             <div id="switcher" class="{{mode}}">
             <ul class="tabs">
             {% for name in forms.keys %}
-            <li class="{{name}} {% ifequal name mode %}active{% endifequal %}" onclick="document.getElementById('switcher').setAttribute('class','{{name}}');">{{name}}</li>
+            <li class="{{name}} {% ifequal name mode %}active{% endifequal %}" onclick="document.getElementById('switcher').setAttribute('class','{{name}}');">
+                <img src="{% static 'types' %}/icon_{{name|lower}}.png" style="height: 1em;vertical-align: middle;" />
+                {{name}}
+            </li>
             {% endfor %}
             </ul>
             
