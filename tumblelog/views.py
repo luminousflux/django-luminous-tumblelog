@@ -95,7 +95,6 @@ def bookmarklet_window(request):
                 init.update(oembed.data)
             prefix = x
 
-            print x,init,data
             forms[x] = y(
                     data=data,
                     prefix=prefix,
@@ -111,14 +110,13 @@ def bookmarklet_window(request):
                 form.fields['parent'].queryset = PARENT_MODEL.objects.for_user(request.user)
         if request.POST.get('submit', None):
             mode = request.POST['submit']
-            print 'submitted', mode
             try:
                 if forms[mode].is_valid():
                     forms[mode].save()
                     templatevars['success'] = True
             except ValueError, e:
                 print e
-                pass # DAFUQDAFUQ
+                pass # if value errors occur here, they should have been caught by form validation.
         templatevars['forms'] = forms
         templatevars['mode'] = mode
 

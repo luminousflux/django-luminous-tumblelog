@@ -1,4 +1,4 @@
-{% load url from future %}{% load static %}{% load crispy_forms_tags %}
+{% load url from future %}{% load static %}{% load crispy_forms_tags %}{% load bookmarklet_tags %}
 <html>
     <head><title>{{site.name}} bookmarklet</title>
         <link rel="stylesheet" href="{% static 'tumblelog/bookmarklet.css' %}" />
@@ -47,6 +47,8 @@
                 {% for name, form in forms.iteritems %}
                 <div class="form {{name}} {% ifequal mode name %}active{%endifequal%} inlineLabels">
                     {{form|crispy}}
+
+                    {% conditional_include_typelet name %}
                     <div class="buttonHolder">
                         <button type="submit" value="{{name}}" name="submit">{{name|title}}</button>
                     </div>
