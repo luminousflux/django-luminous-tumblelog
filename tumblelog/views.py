@@ -4,6 +4,7 @@ from django.views.generic.simple import direct_to_template
 from django.contrib.sites.models import get_current_site
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
+from operator import itemgetter
 
 from tumblelog.models import Post, PARENT_MODEL
 from tumblelog.forms import form_for_type, ExtendableForm
@@ -16,6 +17,8 @@ from html2text import html2text
 from tumblelog import embedly_support
 
 import copy
+import json
+import base64
 
 
 class PostListView(ListView):
@@ -63,9 +66,12 @@ def bookmarklet_window(request):
 
         url = request.POST['url']
         proper = request.POST.get('proper')
-        images = [(x[4:],request.POST[x+'_w'],request.POST[x+'_h'],) for x in request.POST.keys() if x.startswith('img_') and not x[-1] in ('w','h')]
+        images = [(request.POST[x],request.POST[x+'_w'],request.POST[x+'_h'],) for x in request.POST.keys() if x.startswith('img_') and not x[-1] in ('w','h')]
+        images.sort(key=itemgetter(2))
+        images = json.loads(base64.b64decode(request.POST['images'])) if request.POST.get('images',None) else images
         quote = html2text(request.POST.get('selection',''))
 
+        
         if not proper:
             oembed = embedly_support.get_info_if_active(url)
 
@@ -73,11 +79,13 @@ def bookmarklet_window(request):
             mode = oembed['type']
         else:
             mode = 'quote' if quote else 'picture' if images else 'link'
+
+        mode = request.POST['submit'] if request.POST.get('submit', None) else mode
+
         templatevars['url'] = url
         templatevars['images'] = images
         templatevars['quote'] = quote
         initial = {'provider_url': url,'author':request.user,'body':quote}
-
         def generate_meta(name, parentmeta):
             newmeta = copy.copy(parentmeta)
             newmeta.exclude = copy.copy(parentmeta.exclude) + ['author']
@@ -96,7 +104,7 @@ def bookmarklet_window(request):
             prefix = x
 
             forms[x] = y(
-                    data=data,
+                    data,
                     prefix=prefix,
                     initial=dict(init.items() + {'post_type': x}.items()),
                     instance = Post(author=request.user))
@@ -111,11 +119,11 @@ def bookmarklet_window(request):
         if request.POST.get('submit', None):
             mode = request.POST['submit']
             try:
+                forms[mode].full_clean()
                 if forms[mode].is_valid():
                     forms[mode].save()
                     templatevars['success'] = True
             except ValueError, e:
-                print e
                 pass # if value errors occur here, they should have been caught by form validation.
         templatevars['forms'] = forms
         templatevars['mode'] = mode

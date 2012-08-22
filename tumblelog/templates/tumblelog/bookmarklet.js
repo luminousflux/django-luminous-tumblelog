@@ -49,7 +49,7 @@ var _BOOKMARKLET = function() {
   add_input(form, 'url', document.location.href);
   add_input(form, 'selection', get_selection());
   add_input(form, 'title', document.title);
- 
+
   // images
   for(var i = 0; i < document.images.length; i++) {
     var img = document.images[i];

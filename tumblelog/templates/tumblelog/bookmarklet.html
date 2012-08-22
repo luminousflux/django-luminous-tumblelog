@@ -1,4 +1,4 @@
-{% load url from future %}{% load static %}{% load crispy_forms_tags %}{% load bookmarklet_tags %}
+{% load url from future %}{% load static %}{% load crispy_forms_tags %}{% load bookmarklet_tags %}{% load encoding %}
 <html>
     <head><title>{{site.name}} bookmarklet</title>
         <link rel="stylesheet" href="{% static 'tumblelog/bookmarklet.css' %}" />
@@ -42,7 +42,7 @@
             <form method="post" action="{% url 'tumblelog:bookmarklet.html' %}" class="uniForm" style="clear: left;">
                 <input type="hidden" name="proper" value="1" />
                 <input type="hidden" name="url" value="{{url}}" />
-                <input type="hidden" name="images" value="{{images}}" />
+                <input type="hidden" name="images" value="{{images|json|base64}}" />
                 <input type="hidden" name="quote" value="{{quote}}" />
                 {% for name, form in forms.iteritems %}
                 <div class="form {{name}} {% ifequal mode name %}active{%endifequal%} inlineLabels">
