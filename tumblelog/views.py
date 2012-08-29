@@ -3,10 +3,11 @@ from django.views.generic.list import ListView
 from django.views.generic.simple import direct_to_template
 from django.contrib.sites.models import get_current_site
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.models import User
 from django.conf import settings
 from operator import itemgetter
 
-from tumblelog.models import Post, PARENT_MODEL
+from tumblelog.models import Post, PARENT_MODEL, get_profile_model
 from tumblelog.forms import form_for_type, ExtendableForm
 from tumblelog.settings import POSTS_PER_PAGE
 from tumblelog.bookmarklet import generate_bookmarklink
@@ -52,7 +53,7 @@ class PostDetailView(DetailView):
         return context
 
 def bookmarklet(request):
-    response = direct_to_template(request, 'tumblelog/bookmarklet.js', {'site': get_current_site(request)}, mimetype='text/javascript')
+    response = direct_to_template(request, 'tumblelog/bookmarklet.js', {'site': get_current_site(request), 'api_key': request.GET['api_key']}, mimetype='text/javascript')
     response['Access-Control-Allow-Origin'] = '*'
     return response
 
@@ -60,7 +61,9 @@ def bookmarklet(request):
 def bookmarklet_window(request):
     forms = form_for_type
 
-    templatevars = {'site': get_current_site(request), 'bookmarklink': generate_bookmarklink(request), 'proper': request.method=='POST', 'typeimages': hasattr(settings,'TUMBLELOG_TYPEIMAGES') and settings.TUMBLELOG_TYPEIMAGES}
+    user = get_profile_model().get_by_api_key(request.GET['api_key']).user
+    templatevars = {'site': get_current_site(request), 'bookmarklink': generate_bookmarklink(request, user), 'proper': request.method=='POST',
+                    'typeimages': hasattr(settings,'TUMBLELOG_TYPEIMAGES') and settings.TUMBLELOG_TYPEIMAGES, 'apiuser': user}
     if request.method == 'POST':
         oembed = None
 
@@ -71,7 +74,6 @@ def bookmarklet_window(request):
         images = json.loads(base64.b64decode(request.POST['images'])) if request.POST.get('images',None) else images
         quote = html2text(request.POST.get('selection',''))
 
-        
         if not proper:
             oembed = embedly_support.get_info_if_active(url)
 
@@ -85,7 +87,7 @@ def bookmarklet_window(request):
         templatevars['url'] = url
         templatevars['images'] = images
         templatevars['quote'] = quote
-        initial = {'provider_url': url,'author':request.user,'body':quote}
+        initial = {'provider_url': url,'author':user,'body':quote}
         def generate_meta(name, parentmeta):
             newmeta = copy.copy(parentmeta)
             newmeta.exclude = copy.copy(parentmeta.exclude) + ['author']
@@ -99,7 +101,7 @@ def bookmarklet_window(request):
         for x,y in formchilds:
             init = copy.copy(initial)
             data = None if not proper and oembed and mode == x else request.POST if proper and mode == x else None
-            if not proper and oembed and mode==x:
+            if oembed and mode==x:
                 init.update(oembed.data)
             prefix = x
 
@@ -107,7 +109,7 @@ def bookmarklet_window(request):
                     data,
                     prefix=prefix,
                     initial=dict(init.items() + {'post_type': x}.items()),
-                    instance = Post(author=request.user))
+                    instance = Post(author=user))
             if not proper and oembed and mode==x:
                 try:
                     forms[x].is_valid()
@@ -115,7 +117,7 @@ def bookmarklet_window(request):
                     print x
         if PARENT_MODEL:
             for name, form in forms.iteritems():
-                form.fields['parent'].queryset = PARENT_MODEL.objects.for_user(request.user)
+                form.fields['parent'].queryset = PARENT_MODEL.objects.for_user(user)
         if request.POST.get('submit', None):
             mode = request.POST['submit']
             try:

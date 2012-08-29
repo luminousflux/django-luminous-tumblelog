@@ -1,21 +1,23 @@
-from django.db import models
-from django.db.models import get_model
-from jsonfield import JSONField
 import copy
 
-from django.contrib.auth.models import User
-from django.conf import settings
-
-
-from django.conf import settings
-
 from tumblelog.managers import PostManager
+
+from django.conf import settings
+from django.db import models
+from django.db.models import get_model
+from django.contrib.auth.models import User
 from django.template import loader
+
+from jsonfield import JSONField
 
 assert('django_extensions' in settings.INSTALLED_APPS)
 assert('crispy_forms' in settings.INSTALLED_APPS)
 
 PARENT_MODEL = get_model(*settings.TUMBLELOG_PARENT_MODEL.split('.')) if hasattr(settings,'TUMBLELOG_PARENT_MODEL') else None
+KEY_SIZE = settings.TUMBLELOG_KEY_SIZE if hasattr(settings, 'TUMBLELOG_KEY_SIZE') else 30
+
+def get_profile_model():
+    return models.get_model(*settings.AUTH_PROFILE_MODULE.split('.'))
 
 class Post(models.Model):
     post_type = models.CharField(max_length=100, null=False, blank=False)
@@ -24,11 +26,9 @@ class Post(models.Model):
     published_at = models.DateTimeField(null=True, blank=True)
     data = JSONField(blank=True)
 
-
     if PARENT_MODEL:
         parent = models.ForeignKey(PARENT_MODEL, null=False, blank=False)
 
-    
     objects = PostManager()
 
     class Meta:
@@ -55,3 +55,28 @@ class Post(models.Model):
 
     def save(self,*args,**kwargs):
         super(Post, self).save(*args,**kwargs)
+
+
+class ApiKeyProfileMixin(models.Model):
+    """required mixin for whatever model is registered as settings.AUTH_PROFILE_MODEL
+    """
+    _api_key = models.TextField(null=True)
+
+    class Meta:
+        abstract = True
+
+    def api_key(self):
+        if not self._api_key:
+            unique = False
+            api_key = None
+            while not unique:
+                now = datetime.utcnow()
+                api_key = hashlib.md5('%s-%s' % (self.user.email, now)).hexdigest()[:KEY_SIZE]
+                unique = (self.__class__._default_manager.filter(_api_key=api_key).count() == 0)
+            self._api_key = api_key
+            self.save()
+        return self._api_key
+
+    @classmethod
+    def get_by_api_key(cls, api_key):
+        return cls._default_manager.get(_api_key=api_key)

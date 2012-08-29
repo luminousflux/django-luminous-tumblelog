@@ -22,6 +22,7 @@
 
         <a href="{{bookmarklink}}">{{site.name}} bookmarklet</a>
         {% else %}
+        <div style="text-align: right;">{{apiuser}}</div>
         {% if success %}
             Saved!
 
@@ -39,7 +40,7 @@
             {% endfor %}
             </ul>
             
-            <form method="post" action="{% url 'tumblelog:bookmarklet.html' %}" class="uniForm" style="clear: left;">
+            <form method="post" action="{% url 'tumblelog:bookmarklet.html' %}?api_key={{api_key}}" class="uniForm" style="clear: left;">
                 <input type="hidden" name="proper" value="1" />
                 <input type="hidden" name="url" value="{{url}}" />
                 <input type="hidden" name="images" value="{{images|json|base64}}" />
