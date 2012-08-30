@@ -44,7 +44,7 @@ var _BOOKMARKLET = function() {
   var form = document.createElement('form');
   form.setAttribute('method', 'post');
   form.setAttribute('accept-charset', 'utf-8');
-  form.setAttribute('action', 'http://{{site.domain}}{% url 'tumblelog:bookmarklet.html' %}?api_key={{api_key}}');
+  form.setAttribute('action', '//{{site.domain}}{% url 'tumblelog:bookmarklet.html' %}?api_key={{api_key}}');
   form.target = '{{site.name}}_bookmarklet';
   add_input(form, 'url', document.location.href);
   add_input(form, 'selection', get_selection());
