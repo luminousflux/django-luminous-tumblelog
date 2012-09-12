@@ -11,6 +11,7 @@ from django.template import loader
 from jsonfield import JSONField
 
 from datetime import datetime
+import hashlib
 
 assert('django_extensions' in settings.INSTALLED_APPS)
 assert('crispy_forms' in settings.INSTALLED_APPS)
