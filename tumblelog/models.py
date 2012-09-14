@@ -26,7 +26,7 @@ class Post(models.Model):
     post_type = models.CharField(max_length=100, null=False, blank=False)
     author = models.ForeignKey(User, null=False, blank=False)
     created_at = models.DateTimeField(auto_now_add=True)
-    published_at = models.DateTimeField(null=True, blank=True)
+    published_at = models.DateTimeField(null=True, blank=True, auto_now_add=True)
     data = JSONField(blank=True)
 
     if PARENT_MODEL:
