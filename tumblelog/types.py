@@ -7,7 +7,7 @@ POST_TYPES = {
     'link': {'provider_url': forms.URLField(label='Link'),
              'title': forms.CharField(required=False),},
     'quote': {'provider_url': forms.URLField(label='Source URL', required=False),
-              'source': forms.CharField(required=False),
-              'body': forms.CharField(forms.Textarea),}
+              'source': forms.CharField(required=False, label='Source Name'),
+              'body': forms.CharField(widget=forms.Textarea),}
 }
 

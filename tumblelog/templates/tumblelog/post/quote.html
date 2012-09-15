@@ -1,0 +1,5 @@
+{% extends 'tumblelog/post/base.html' %}
+{% block tumblecontent %}
+<blockquote>{{block.super}}</blockquote>
+{% if post.data.source %}<cite>— {{post.data.source}}</cite>{% endif %}
+{% endblock %}
