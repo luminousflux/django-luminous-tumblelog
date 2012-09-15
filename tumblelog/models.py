@@ -43,7 +43,7 @@ class Post(models.Model):
 
     @property
     def template(self):
-        x = loader.select_template(['tumblelog/post/%s.html' % (self.post_type), 'tumblelog/posts/base.html'])
+        x = loader.select_template(['tumblelog/post/%s.html' % (self.post_type), 'tumblelog/post/base.html'])
         return x.name
 
     @models.permalink
