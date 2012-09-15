@@ -1,15 +1,15 @@
-{% load markup %}
+{% load markup %}{# want to customize this? consider overloading tumblelog/post/base.html instead - that's what it's made for! #}
 <div class="entry {{ post.post_type }}" data-pubdate="{{ post.published_at.isoformat }}">
     {% block tumbletitle %}
     <h2><a href="{{ post.get_absolute_url }}">{{ post.fields.title }}</a></h2>
     {% endblock %}
-    {% block tumblecontent %}
-    {% if post.data.provider_url %}{{ post.data.body|markdown }}</a>{% else %}{{post.data.body|markdown}}{%endif%}
-    {% endblock %}
+    <div class="tumblecontent">{% block tumblecontent %}
+    {{post.data.body|markdown}}
+    {% endblock %}</div>
     <div class="meta">
         {% block tumblemeta %}
         {{ post.published_at|timesince }} ago by {{post.author}}
         {% endblock %}
-        {% block tumblevia %}via <a href="{{post.data.provider_url}}">{{post.data.provider_url|safe_html}}</a>{% endblock %}
+        {% block tumblevia %}{% if post.data.provider_url %}via <a href="{{post.data.provider_url}}">{{post.data.provider_url|escape}}</a>{% endif %}{% endblock %}
     </div>
 </div>
