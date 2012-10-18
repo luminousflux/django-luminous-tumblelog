@@ -41,13 +41,19 @@
 .tumblelog .link { background-image: url(../types/icon_link.png); }
 .tumblelog .video { background-image: url(../types/icon_video.png); }
 .tumblelog .image { background-image: url(../types/icon_image.png); }
-.tumblelog .video embed, .tumblelog .image img { margin-bottom: 5px; }
+.tumblelog .photo { background-image: url(../types/icon_image.png); }
+.tumblelog .video embed, .tumblelog .image img, .tumblelog .picture img { margin-bottom: 5px; }
 .tumblelog .quote { background-image: url(../types/icon_quote.png); }
 .tumblelog .quote blockquote {
   margin: 0; padding: 0;
   font-size: 1.4em;
   line-height: 1.2em;
 }
+
+.tumblelog .entry img {
+    max-width: 100%;
+}
+
 .tumblelog .quote cite {
   font-style: normal;
   display: block;
