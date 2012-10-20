@@ -40,6 +40,7 @@ class PostListView(ListView):
 
 class PostDetailView(DetailView):
     context_object_name = 'post'
+    template_name_field = 'template'
 
     def get_queryset(self):
         return Post.objects.public()
