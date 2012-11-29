@@ -4,8 +4,9 @@
     <h2><a href="{{ post.get_absolute_url }}">{{ post.fields.title }}</a></h2>
     {% endblock %}
     <div class="tumblecontent">{% block tumblecontent %}
-    {{post.data.body|markdown}}
+    {{post.data.body|default:""|markdown}}
     {% endblock %}</div>
+    <div class="tumbletext">{% block tumbletext %}{{post.data.text|default:""|markdown}}{% endblock %}</div>
     <div class="meta">
         {% block tumblemeta %}
         {{ post.published_at|timesince }} ago by {{post.author}}
