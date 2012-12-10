@@ -10,18 +10,17 @@ __all__ = ['PostAdmin', 'admin_classes']
 class PostAdmin(admin.ModelAdmin):
     exclude = tuple()
     form = ExtendableForm
-
 admin.site.register(Post, PostAdmin)
 
 admin_classes = []
 
-def qs_create(name):
+def queryset_create(name):
     """ lexical closure for PostAdmin.queryset """
     def queryset(self, request):
         qs = super(PostAdmin,self).queryset(request)
         return qs.filter(post_type=name)
     return queryset
-def sm_create(name):
+def save_model_create(name):
     """ lexical closure for PostAdmin.save_model """
     def save_model(self, request, obj, form, change):
         if not obj.author_id:
@@ -44,10 +43,10 @@ for name, fields in POST_TYPES.iteritems():
         name + PostAdmin.__name__,
         (PostAdmin,),
         {'form': form_cls,
-         'queryset': qs_create(name),
-         'save_model': sm_create(name),
-         'exclude': tuple(['post_type','author'] + [x for x in PostAdmin.exclude])})
-
+         'queryset': queryset_create(name),
+         'save_model': save_model_create(name),
+         'exclude': tuple(['post_type','author','data'] + [x for x in PostAdmin.exclude])})
+    
     model_cls = type(
         Post.__name__+'Proxy'+name[0].upper()+name[1:],
         (Post,),

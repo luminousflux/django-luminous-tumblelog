@@ -5,11 +5,8 @@ from tumblelog.types import POST_TYPES
 _priority_fields = ['parent']
 
 class ExtendableForm(forms.ModelForm):
-    post_type = forms.fields.Field(widget=forms.widgets.HiddenInput())
-
     class Meta:
         model = Post
-        exclude = ['data',]
 
     def __init__(self, *args, **kwargs):
         initial = {}

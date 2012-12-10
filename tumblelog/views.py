@@ -93,7 +93,7 @@ def bookmarklet_window(request):
         initial = {'provider_url': url,'author':user,'body':quote}
         def generate_meta(name, parentmeta):
             newmeta = copy.copy(parentmeta)
-            newmeta.exclude = copy.copy(parentmeta.exclude) + ['author']
+            newmeta.exclude = (copy.copy(parentmeta.exclude) or []) + ['author','post_type','data']
             return newmeta
         formchilds = []
         for name, form in forms.iteritems():
@@ -123,10 +123,13 @@ def bookmarklet_window(request):
                 form.fields['parent'].queryset = PARENT_MODEL.objects.for_user(user)
         if request.POST.get('submit', None):
             mode = request.POST['submit']
+            form = forms[mode]
+            if form.instance:
+                form.instance.post_type = mode
             try:
-                forms[mode].full_clean()
-                if forms[mode].is_valid():
-                    forms[mode].save()
+                form.full_clean()
+                if form.is_valid():
+                    form.save()
                     templatevars['success'] = True
             except ValueError, e:
                 pass # if value errors occur here, they should have been caught by form validation.
