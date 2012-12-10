@@ -28,6 +28,7 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     published_at = models.DateTimeField(null=True, blank=True, auto_now_add=True)
     data = JSONField(blank=True)
+    pin_until = models.DateTimeField(null=True,blank=True,help_text='Leave empty to not pin')
 
     if PARENT_MODEL:
         parent = models.ForeignKey(PARENT_MODEL, null=False, blank=False)

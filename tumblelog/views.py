@@ -65,7 +65,7 @@ def bookmarklet_window(request):
     user = get_profile_model().get_by_api_key(request.GET['api_key']).user
     templatevars = {'site': get_current_site(request), 'bookmarklink': generate_bookmarklink(request, user), 'proper': request.method=='POST',
                     'typeimages': hasattr(settings,'TUMBLELOG_TYPEIMAGES') and settings.TUMBLELOG_TYPEIMAGES, 'apiuser': user,
-                    'jquery_url': hasattr(settings,'TUMBLELOG_JQUERY_URL') and settings.TUMBLELOG_JQUERY_URL}
+                    }
     if request.method == 'POST':
         oembed = None
 

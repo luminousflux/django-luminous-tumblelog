@@ -1,22 +1,19 @@
-{% load url from future %}{% load static %}{% load crispy_forms_tags %}{% load bookmarklet_tags %}{% load encoding %}
+{% load url from future %}{% load static from staticfiles %}{% load crispy_forms_tags %}{% load bookmarklet_tags %}{% load encoding %}
 <html>
     <head><title>{{site.name}} bookmarklet</title>
         <link rel="stylesheet" href="{% static 'tumblelog/bookmarklet.css' %}" />
         <link rel="stylesheet" href="{% static 'uni_form/uni-form.css' %}" />
         <link rel="stylesheet" href="{% static 'uni_form/default.uni-form.css' %}" />
-        <style>
-            {% for name in forms.keys %}
-            #switcher.{{name}} div.form.{{name}} {
-                display: block;
-            }
-            #switcher.{{name}} ul.tabs li.{{name}} {
-                border-bottom: 1px solid transparent;
-                font-weight: bold;
-            }
-            {% endfor %}
-        </style>
-        <script src="{{jquery_url|default:"//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"}}"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+        <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/base/jquery-ui.css" type="text/css" />
         <script src="{% static 'tumblelog/bookmarklet.js' %}"></script>
+        <script>
+            var active_tab_index;
+            var navigate_to_start_tab = function() {
+                active_tab_index = '{% for name, form in forms.iteritems %}{% ifequal name mode %}{{forloop.counter}}{%endifequal%}{% endfor %}';
+            };
+        </script>
     </head>
     <body>
         {% if not proper %}
@@ -32,33 +29,34 @@
                 window.setTimeout(window.close, 2000);
             </script>
         {% else %}
-            <div id="switcher" class="{{mode}}">
-            <ul class="tabs">
-            {% for name in forms.keys %}
-            <li class="{{name}} {% ifequal name mode %}active{% endifequal %}" onclick="document.getElementById('switcher').setAttribute('class','{{name}}');">
-                {% if typeimages %}<img src="{% static 'types' %}/icon_{{name|lower}}.png" style="height: 1em;vertical-align: middle;" />{% endif %}
-                {{name}}
-            </li>
-            {% endfor %}
-            </ul>
-            
             <form method="post" action="{% url 'tumblelog:bookmarklet.html' %}?api_key={{api_key}}" class="uniForm" style="clear: left;">
                 <input type="hidden" name="proper" value="1" />
                 <input type="hidden" name="url" value="{{url}}" />
                 <input type="hidden" name="images" value="{{images|json|base64}}" />
                 <input type="hidden" name="quote" value="{{quote}}" />
-                {% for name, form in forms.iteritems %}
-                <div class="form {{name}} {% ifequal mode name %}active{%endifequal%} inlineLabels">
-                    {{form|crispy}}
+                <div id="switcher">
+                    <ul class="tabs">
+                    {% for name in forms.keys %}
+                    <li>
+                        <a href="#fragment-{{forloop.counter}}">
+                            {# {% if typeimages %}<img src="{% static 'types' %}/icon_{{name|lower}}.png" style="height: 1em;vertical-align: middle;" />{% endif %} #}
+                            <span>{{name}}</span>
+                        </a>
+                    </li>
+                    {% endfor %}
+                    </ul>
+                    {% for name, form in forms.iteritems %}
+                        <div  id="fragment-{{forloop.counter}}" class="form {{name}} {% ifequal mode name %}active{%endifequal%} inlineLabels">
+                            {{form|crispy}}
 
-                    {% conditional_include_typelet name %}
-                    <div class="buttonHolder">
-                        <button type="submit" value="{{name}}" name="submit">{{name|title}}</button>
-                    </div>
+                            {% conditional_include_typelet name %}
+                            <div class="buttonHolder">
+                                <button type="submit" value="{{name}}" name="submit">{{name|title}}</button>
+                            </div>
+                        </div>
+                    {% endfor %}
                 </div>
-                {% endfor %}
             </form>
-            </div>
         {% endif %}
         {% endif %}
     </body>

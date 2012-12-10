@@ -1,33 +1,12 @@
 body {
-    background-color: rgb(240,255,255);
+    font-size: .8em;
 }
 
-ul.tabs {
-    margin: 0;
-    padding: 0;
-    border-left: 2px solid #EFEFEF;
-    height: 1.6em;
-    border-top-left-radius: 5px;
+.uniForm ul.tabs {
+    float: none;
+    width: auto;
 }
-ul.tabs li {
-    line-height: 1em;
-    margin: 0;
-    padding: .25em 10px;
-    float: left;
-    border-right: 2px solid #EFEFEF;
-    border-top: 2px solid #EFEFEF;
-    border-bottom: 2px solid #EFEFEF;
-    cursor: pointer;
-    border-radius: 5px;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-}
-br.clear {
-    clear: both;
-}
-#switcher div.form {
-    display: none;
-}
-p [name=author] {
-    display: none;
+
+.uniform textarea[name$=text] {
+    height: 2.5em;
 }
