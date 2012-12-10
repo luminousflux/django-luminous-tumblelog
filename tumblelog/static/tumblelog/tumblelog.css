@@ -21,7 +21,7 @@
   margin-right: 1em
 }
 .tumblelog #entries {
-  padding: 10px 20px 10px 10px;
+  padding: 0px 0px 10px 0px;
 }
 .tumblelog .date {
   color: #aaa;
@@ -35,8 +35,10 @@
 
 .tumblelog .entry {
   background: url(../types/icon_regular.png) left top no-repeat; 
-  padding-left: 40px;
+  background-position: 7px 0;
+  padding-left: 50px;
   margin-bottom: 30px;
+  padding-right: 10px;
 }
 .tumblelog .link { background-image: url(../types/icon_link.png); }
 .tumblelog .video { background-image: url(../types/icon_video.png); }
@@ -48,6 +50,13 @@
   margin: 0; padding: 0;
   font-size: 1.4em;
   line-height: 1.2em;
+}
+
+.tumblelog .entry.pinned {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: #FFB;
+    background-position: 7px 15px;
 }
 
 .tumblelog .entry img {

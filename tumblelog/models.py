@@ -38,6 +38,19 @@ class Post(models.Model):
     class Meta:
         ordering = ['-created_at']
 
+    def save(self,*args,**kwargs):
+        super(Post, self).save(*args,**kwargs)
+
+    def __unicode__(self):
+        return '%s:%s' % (self.post_type, self.id,)
+    
+    @models.permalink
+    def get_absolute_url(self):
+        params = {'id': self.id}
+        if PARENT_MODEL:
+            params['parent__slug'] = self.parent.slug
+        return ('tumblelog:detail', [], params)
+
     @property
     def slug(self):
         return self.pk
@@ -47,18 +60,10 @@ class Post(models.Model):
         x = loader.select_template(['tumblelog/post/%s.html' % (self.post_type), 'tumblelog/post/base.html'])
         return x.name
 
-    @models.permalink
-    def get_absolute_url(self):
-        params = {'id': self.id}
-        if PARENT_MODEL:
-            params['parent__slug'] = self.parent.slug
-        return ('tumblelog:detail', [], params)
+    @property
+    def is_pinned(self):
+        return self.pin_until and self.pin_until > datetime.now()
 
-    def __unicode__(self):
-        return '%s:%s' % (self.post_type, self.id,)
-
-    def save(self,*args,**kwargs):
-        super(Post, self).save(*args,**kwargs)
 
 
 class ApiKeyProfileMixin(models.Model):

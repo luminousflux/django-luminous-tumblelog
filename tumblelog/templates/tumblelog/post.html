@@ -1,5 +1,5 @@
 {% load markup %}{# want to customize this? consider overloading tumblelog/post/base.html instead - that's what it's made for! #}
-<div class="entry {{ post.post_type }}" data-pubdate="{{ post.published_at.isoformat }}">
+<div class="entry {{ post.post_type }} {% if post.is_pinned %}pinned{% endif%}" data-pubdate="{{ post.published_at.isoformat }}">
     {% block tumbletitle %}
     <h2><a href="{{ post.get_absolute_url }}">{{ post.fields.title }}</a></h2>
     {% endblock %}
