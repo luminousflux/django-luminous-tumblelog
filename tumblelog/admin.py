@@ -1,15 +1,30 @@
 from copy import deepcopy
 
+from django.utils.translation import ugettext_lazy as _
 from django.contrib import admin
-from tumblelog.models import Post
+from django.contrib.admin import SimpleListFilter
+
+from tumblelog.models import Post, PARENT_MODEL
 from tumblelog.forms import ExtendableForm,form_for_type
 from tumblelog.types import POST_TYPES
 
 __all__ = ['PostAdmin', 'admin_classes']
 
+class ParentListFilter(SimpleListFilter):
+    title = _('parent')
+    parameter_name = 'parent'
+
+    def lookups(self, request, model_admin):
+        parents = set([x.parent for x in Post.objects.filter(author=request.user)])
+        return [(x.pk,x,) for x in parents]
+    def queryset(self, request, queryset):
+        return queryset.filter(parent_id=self.value()) if self.value() else queryset
+
 class PostAdmin(admin.ModelAdmin):
     exclude = tuple()
     form = ExtendableForm
+
+    list_filter = ['author'] + [] if not PARENT_MODEL else [ParentListFilter]
 admin.site.register(Post, PostAdmin)
 
 admin_classes = []

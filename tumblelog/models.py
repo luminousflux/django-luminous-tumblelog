@@ -42,7 +42,7 @@ class Post(models.Model):
         super(Post, self).save(*args,**kwargs)
 
     def __unicode__(self):
-        return '%s:%s' % (self.post_type, self.id,)
+        return (u'%s:%s' % (self.post_type, self.id,)) + (u'' if not PARENT_MODEL else u' for %s' % self.parent)
     
     @models.permalink
     def get_absolute_url(self):
