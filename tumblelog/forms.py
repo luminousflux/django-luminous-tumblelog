@@ -24,12 +24,13 @@ class ExtendableForm(forms.ModelForm):
         fields = [x.name for x in self.Meta.model._meta.fields]
         result = {}
         for field in self.fields:
-            if field in fields:
+            if field in fields and field in cleaned_data:
                 result[field] = cleaned_data.get(field,None)
             else:
                 if not result.get('data', None):
                     result['data'] = {}
-                result['data'][field] = cleaned_data.get(field,None)
+                if field in cleaned_data:
+                    result['data'][field] = cleaned_data.get(field,None)
         return result
 
     def save(self, *args, **kwargs):
