@@ -90,7 +90,7 @@ def bookmarklet_window(request):
         templatevars['images'] = images
         templatevars['quote'] = quote
         templatevars['api_key'] = user.get_profile().api_key()
-        initial = {'provider_url': url,'author':user,'body':quote}
+        initial = {'url': url,'author':user,'body':quote}
         def generate_meta(name, parentmeta):
             newmeta = copy.copy(parentmeta)
             newmeta.exclude = (copy.copy(parentmeta.exclude) or []) + ['author','post_type','data']

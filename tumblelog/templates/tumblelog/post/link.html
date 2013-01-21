@@ -1,5 +1,5 @@
 {% extends 'tumblelog/post/base.html' %}{% load markup %}
 {% block tumblecontent %}
-<a href="{{post.data.provider_url}}">{% if post.data.title %}{{post.data.title}}{% else %}{{post.data.provider_url}}{% endif %}</a>
+<a href="{{post.data.url}}">{% if post.data.title %}{{post.data.title}}{% else %}{{post.data.url}}{% endif %}</a>
 {% endblock %}
 {% block tumblevia %}{% endblock %}
