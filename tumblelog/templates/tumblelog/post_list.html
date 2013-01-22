@@ -1,7 +1,5 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    {% for post in posts %}
-        {% include post.template %}
-    {% endfor %}
+{% include 'tumblelog/post_list.inc' %}
 {% endblock %}
