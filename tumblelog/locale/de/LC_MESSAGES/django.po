@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-22 02:49+0100\n"
+"POT-Creation-Date: 2013-01-22 02:53+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -41,10 +41,20 @@ msgstr "%s ist in dem Format nicht verfügbar"
 msgid "Unable to contact server"
 msgstr "Konnte den Server nicht erreichen"
 
+#: templates/tumblelog/post_list.inc:7
+msgid "previous"
+msgstr "neurere"
+
 #: templates/tumblelog/post_list.inc:11
 #, python-format
 msgid ""
 "\n"
 "                Page %(cur_page)s of %(num_pages)s\n"
 "            "
-msgstr "\nSeite %(cur_page)s von %(num_pages)s"
+msgstr ""
+"\n"
+"Seite %(cur_page)s von %(num_pages)s"
+
+#: templates/tumblelog/post_list.inc:17
+msgid "next"
+msgstr "ältere"
