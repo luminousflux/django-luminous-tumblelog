@@ -25,9 +25,10 @@ import base64
 class PostListView(ListView):
     context_object_name = 'posts'
     paginate_by = POSTS_PER_PAGE
+    template_name = 'tumblelog/post_list.html'
 
     def get_queryset(self):
-        return Post.objects.public()
+        return Post.objects.filter(**self.kwargs).timeline()
 
     def get_context_data(self, **kwargs):
         context = super(PostListView, self).get_context_data(**kwargs)

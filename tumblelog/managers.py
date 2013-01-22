@@ -11,6 +11,8 @@ from django.core.paginator import Paginator
 
 import traceback
 
+from tumblelog import settings as tsettings
+
 
 class QuerySetChain(object):
     """
@@ -74,13 +76,15 @@ class PostQuerySet(QuerySet):
         def for_parent(self, parent):
             return self.filter(parent=parent)
 
-    def get_page(self, page, posts_per_page=10):
-        qs = self
+    def timeline(self):
+        qs = self.public()
         qs.order_by('published_at')
         pinned = qs.filter(pin_until__isnull=False).filter(pin_until__gte=datetime.now())
         qs2 = qs.exclude(pin_until__isnull=False,pin_until__gte=datetime.now())
-        qs3 = QuerySetChain(pinned, qs2)
-        return Paginator(qs3,posts_per_page).page(page)
+        return QuerySetChain(pinned, qs2)
+
+    def get_page(self, page, posts_per_page=tsettings.POSTS_PER_PAGE):
+        return Paginator(self.timeline(),posts_per_page).page(page)
 
 class PostManager(models.Manager):
     """
