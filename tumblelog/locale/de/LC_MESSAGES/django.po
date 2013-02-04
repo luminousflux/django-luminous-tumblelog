@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-22 02:53+0100\n"
+"POT-Creation-Date: 2013-02-05 00:01+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: admin.py:14
+#: admin.py:14 models.py:36
 msgid "parent"
 msgstr "Gehört zu"
 
@@ -40,6 +40,38 @@ msgstr "%s ist in dem Format nicht verfügbar"
 #: fields.py:81
 msgid "Unable to contact server"
 msgstr "Konnte den Server nicht erreichen"
+
+#: models.py:27
+msgid "post type"
+msgstr "Typ"
+
+#: models.py:28
+msgid "created at"
+msgstr "erstellt am"
+
+#: models.py:29
+msgid "published at"
+msgstr "veröffentlicht am"
+
+#: models.py:30
+msgid "pin until"
+msgstr "ganz oben bis"
+
+#: models.py:33
+msgid "author"
+msgstr "autor"
+
+#: models.py:42
+msgid "Post"
+msgstr "Post"
+
+#: models.py:43
+msgid "Posts"
+msgstr "Posts"
+
+#: models.py:76
+msgid "API key"
+msgstr "API key"
 
 #: templates/tumblelog/post_list.inc:7
 msgid "previous"

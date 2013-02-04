@@ -1,17 +1,18 @@
 import copy
+import hashlib
+from datetime import datetime
 
 from tumblelog.managers import PostManager
 
 from django.conf import settings
+from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import get_model
-from django.contrib.auth.models import User
 from django.template import loader
+from django.utils.translation import ugettext as _
 
 from jsonfield import JSONField
 
-from datetime import datetime
-import hashlib
 
 assert('django_extensions' in settings.INSTALLED_APPS)
 assert('crispy_forms' in settings.INSTALLED_APPS)
@@ -23,27 +24,30 @@ def get_profile_model():
     return models.get_model(*settings.AUTH_PROFILE_MODULE.split('.'))
 
 class Post(models.Model):
-    post_type = models.CharField(max_length=100, null=False, blank=False)
-    author = models.ForeignKey(User, null=False, blank=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-    published_at = models.DateTimeField(null=True, blank=True, auto_now_add=True)
+    post_type = models.CharField(_('post type'), max_length=100, null=False, blank=False)
+    created_at = models.DateTimeField(_('created at'), auto_now_add=True)
+    published_at = models.DateTimeField(_('published at'), null=True, blank=True, auto_now_add=True)
+    pin_until = models.DateTimeField(_('pin until'), null=True,blank=True,help_text='Leave empty to not pin')
     data = JSONField(blank=True)
-    pin_until = models.DateTimeField(null=True,blank=True,help_text='Leave empty to not pin')
+
+    author = models.ForeignKey(User, null=False, blank=False, verbose_name=_('author'))
 
     if PARENT_MODEL:
-        parent = models.ForeignKey(PARENT_MODEL, null=False, blank=False)
+        parent = models.ForeignKey(PARENT_MODEL, null=False, blank=False, verbose_name=_('parent'))
 
     objects = PostManager()
 
     class Meta:
         ordering = ['-created_at']
+        verbose_name = _('Post')
+        verbose_name_plural = _('Posts')
 
     def save(self,*args,**kwargs):
         super(Post, self).save(*args,**kwargs)
 
     def __unicode__(self):
         return (u'%s:%s' % (self.post_type, self.id,)) + (u'' if not PARENT_MODEL else u' for %s' % self.parent)
-    
+
     @models.permalink
     def get_absolute_url(self):
         params = {'id': self.id}
@@ -69,7 +73,7 @@ class Post(models.Model):
 class ApiKeyProfileMixin(models.Model):
     """required mixin for whatever model is registered as settings.AUTH_PROFILE_MODEL
     """
-    _api_key = models.TextField(null=True)
+    _api_key = models.TextField(_('API key'), null=True)
 
     class Meta:
         abstract = True
