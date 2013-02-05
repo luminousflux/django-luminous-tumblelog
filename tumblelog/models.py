@@ -2,6 +2,7 @@ import copy
 import hashlib
 import requests
 import os.path
+from easy_thumbnails.files import get_thumbnailer
 from datetime import datetime
 
 from tumblelog.managers import PostManager
@@ -35,7 +36,7 @@ class Post(models.Model):
     post_type = models.CharField(_('post type'), max_length=100, null=False, blank=False)
     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
     published_at = models.DateTimeField(_('published at'), null=True, blank=True, auto_now_add=True)
-    pin_until = models.DateTimeField(_('pin until'), null=True,blank=True,help_text='Leave empty to not pin')
+    pin_until = models.DateTimeField(_('pin until'), null=True,blank=True,help_text=_('Leave empty to not pin'))
     data = JSONField(blank=True)
 
     author = models.ForeignKey(User, null=False, blank=False, verbose_name=_('author'))
@@ -45,13 +46,20 @@ class Post(models.Model):
 
     objects = PostManager()
 
+    def __init__(self, *args, **kwargs):
+        super(Post, self).__init__(*args, **kwargs)
+        for key in tumblesettings.TUMBLELOG_MIRROR_IMAGEFIELDS:
+            if key in self.data and '%s_storagepath'%key in self.data:
+                for k,v in tumblesettings.THUMBNAILER.iteritems():
+                    setattr(self, u'%s_%s' % (key,k,), lambda: get_thumbnailer(self.data['%s_storagepath' % key]).get_thumbnail(v))
+
     class Meta:
         ordering = ['-created_at']
         verbose_name = _('Post')
         verbose_name_plural = _('Posts')
 
     def save(self,*args,**kwargs):
-        for key in tumblesettings.TUMBLELOG_MIRROR_PARAMS:
+        for key in tumblesettings.TUMBLELOG_MIRROR_IMAGEFIELDS:
             if key in self.data:
                 self.mirror(key)
         super(Post, self).save(*args,**kwargs)

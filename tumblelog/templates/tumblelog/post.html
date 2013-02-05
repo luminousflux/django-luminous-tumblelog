@@ -11,6 +11,6 @@
         {% block tumblemeta %}
         {{ post.published_at|timesince }} ago by {{post.author}}
         {% endblock %}
-        {% block tumblevia %}{% if post.data.url %}via <a href="{{post.data.url }}">{{post.data.url|escape}}</a>{% endif %}{% endblock %}
+        <span class="via">{% block tumblevia %}{% if post.data.url %}via <a href="{{post.data.url }}">{{post.data.url|escape}}</a>{% endif %}{% endblock %}</span>
     </div>
 </div>

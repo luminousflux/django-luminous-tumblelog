@@ -15,4 +15,3 @@ POST_TYPES = {
               'body': forms.CharField(widget=forms.Textarea),
               'text': forms.CharField(widget=forms.Textarea,required=False),}
 }
-
