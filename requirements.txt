@@ -4,4 +4,6 @@ django-extensions
 django
 django-jsonfield
 html2text
+easy-thumbnails
+requests
 -e git+git://github.com/luminousflux/django-crispy-forms.git#egg=django-crispy-forms-1.1.4

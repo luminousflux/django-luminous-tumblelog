@@ -3,6 +3,8 @@ from django.utils.translation import ugettext as _
 
 POSTS_PER_PAGE = getattr(settings, 'TUMBLELOG_POSTS_PER_PAGE', 10)
 
+TUMBLELOG_MIRROR_PARAMS = getattr(settings, 'TUMBLELOG_MIRROR_PARAMS', ['photo'])
+
 # RSS-related
 RSS_TITLE = _(getattr(settings, 'TUMBLELOG_RSS_TITLE', ''))
 RSS_LINK = getattr(settings, 'TUMBLELOG_RSS_LINK', '')

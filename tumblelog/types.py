@@ -1,8 +1,9 @@
 from django import forms
+from tumblelog.fields import ImageURLField
 
 POST_TYPES = {
     'photo': {'url': forms.URLField(label='Source URL', required=False),
-              'photo': forms.URLField(label='Photo URL'),
+              'photo': ImageURLField(label='Photo URL'),
               'text': forms.CharField(required=False, widget=forms.Textarea),},
     'video': {'html': forms.CharField(widget=forms.Textarea),
               'text': forms.CharField(widget=forms.Textarea,required=False),},

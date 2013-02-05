@@ -1,5 +1,7 @@
 import copy
 import hashlib
+import requests
+import os.path
 from datetime import datetime
 
 from tumblelog.managers import PostManager
@@ -10,12 +12,18 @@ from django.db import models
 from django.db.models import get_model
 from django.template import loader
 from django.utils.translation import ugettext as _
+from django.core.files.uploadedfile import SimpleUploadedFile
+from django.core.files.storage import DefaultStorage
+from django.template.defaultfilters import slugify
+
 
 from jsonfield import JSONField
+from tumblelog import settings as tumblesettings
 
 
 assert('django_extensions' in settings.INSTALLED_APPS)
 assert('crispy_forms' in settings.INSTALLED_APPS)
+assert('easy_thumbnails' in settings.INSTALLED_APPS)
 
 PARENT_MODEL = get_model(*settings.TUMBLELOG_PARENT_MODEL.split('.')) if hasattr(settings,'TUMBLELOG_PARENT_MODEL') else None
 KEY_SIZE = settings.TUMBLELOG_KEY_SIZE if hasattr(settings, 'TUMBLELOG_KEY_SIZE') else 30
@@ -43,7 +51,24 @@ class Post(models.Model):
         verbose_name_plural = _('Posts')
 
     def save(self,*args,**kwargs):
+        for key in tumblesettings.TUMBLELOG_MIRROR_PARAMS:
+            if key in self.data:
+                self.mirror(key)
         super(Post, self).save(*args,**kwargs)
+
+    def mirror(self, key):
+        if u'%s_original' % key in self.data:
+            return
+        url = self.data[key]
+        try:
+            fd = requests.get(url)
+            if 'image' in fd.headers['content-type']:
+                img_temp = SimpleUploadedFile(slugify(url), fd.content, fd.headers['content-type'])
+                self.data[u'%s_storagepath' % key] = DefaultStorage().save(os.path.join('tumblelog_mirror',slugify(url)), img_temp)
+                self.data[key] = DefaultStorage().url(self.data[u'%s_storagepath' % key])
+                self.data[u'%s_original' % key] = url
+        except Exception, e:
+            print 'exception in urlfetching', e
 
     def __unicode__(self):
         return (u'%s:%s' % (self.post_type, self.id,)) + (u'' if not PARENT_MODEL else u' for %s' % self.parent)

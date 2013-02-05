@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-05 00:01+0100\n"
+"POT-Creation-Date: 2013-02-05 15:03+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,58 +18,53 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: admin.py:14 models.py:36
+#: admin.py:14 models.py:44
 msgid "parent"
 msgstr "Gehört zu"
 
-#: fields.py:45
+#: fields.py:16
+msgid "Invalid URL! (%s)"
+msgstr "Ungültige URL (%s)"
+
+#: fields.py:19
 #, python-format
-msgid "Invalid %s URL"
-msgstr "Ungültige URL %s"
+msgid "This is not an image (%s)"
+msgstr "Dies ist kein Bild (%s)"
 
-#: fields.py:67
+#: fields.py:21
 #, python-format
-msgid "%s not found"
-msgstr "%s nicht gefunden"
+msgid "Request error - URL might be invalid! (%s)"
+msgstr "Request error - URL möglicherweise ungültig! (%s)"
 
-#: fields.py:75
-#, python-format
-msgid "%s not available in the requested format"
-msgstr "%s ist in dem Format nicht verfügbar"
-
-#: fields.py:81
-msgid "Unable to contact server"
-msgstr "Konnte den Server nicht erreichen"
-
-#: models.py:27
+#: models.py:35
 msgid "post type"
 msgstr "Typ"
 
-#: models.py:28
+#: models.py:36
 msgid "created at"
 msgstr "erstellt am"
 
-#: models.py:29
+#: models.py:37
 msgid "published at"
 msgstr "veröffentlicht am"
 
-#: models.py:30
+#: models.py:38
 msgid "pin until"
 msgstr "ganz oben bis"
 
-#: models.py:33
+#: models.py:41
 msgid "author"
 msgstr "autor"
 
-#: models.py:42
+#: models.py:50
 msgid "Post"
 msgstr "Post"
 
-#: models.py:43
+#: models.py:51
 msgid "Posts"
 msgstr "Posts"
 
-#: models.py:76
+#: models.py:101
 msgid "API key"
 msgstr "API key"
 
@@ -90,3 +85,12 @@ msgstr ""
 #: templates/tumblelog/post_list.inc:17
 msgid "next"
 msgstr "ältere"
+
+#~ msgid "%s not found"
+#~ msgstr "%s nicht gefunden"
+
+#~ msgid "%s not available in the requested format"
+#~ msgstr "%s ist in dem Format nicht verfügbar"
+
+#~ msgid "Unable to contact server"
+#~ msgstr "Konnte den Server nicht erreichen"
