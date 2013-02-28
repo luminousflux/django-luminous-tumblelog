@@ -121,7 +121,7 @@ def bookmarklet_window(request):
                     print x
         if PARENT_MODEL:
             for name, form in forms.iteritems():
-                form.fields['parent'].queryset = PARENT_MODEL.objects.for_user(user)
+                form.fields['parent'].queryset = PARENT_MODEL_GET().objects.for_user(user)
         if request.POST.get('submit', None):
             mode = request.POST['submit']
             form = forms[mode]
