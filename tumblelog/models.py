@@ -26,8 +26,8 @@ assert('django_extensions' in settings.INSTALLED_APPS)
 assert('crispy_forms' in settings.INSTALLED_APPS)
 assert('easy_thumbnails' in settings.INSTALLED_APPS)
 
-PARENT_MODEL = get_model(*settings.TUMBLELOG_PARENT_MODEL.split('.')) if hasattr(settings,'TUMBLELOG_PARENT_MODEL') else None
-KEY_SIZE = settings.TUMBLELOG_KEY_SIZE if hasattr(settings, 'TUMBLELOG_KEY_SIZE') else 30
+PARENT_MODEL = settings.TUMBLELOG_PARENT_MODEL if hasattr(settings,'TUMBLELOG_PARENT_MODEL') else None
+PARENT_MODEL_GET = lambda: get_model(*PARENT_MODEL.split('.')) if PARENT_MODEL else None
 
 def get_profile_model():
     return models.get_model(*settings.AUTH_PROFILE_MODULE.split('.'))
