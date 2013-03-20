@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from operator import itemgetter
 
-from tumblelog.models import Post, PARENT_MODEL, get_profile_model
+from tumblelog.models import Post, PARENT_MODEL, PARENT_MODEL_GET, get_profile_model
 from tumblelog.forms import form_for_type, ExtendableForm
 from tumblelog.settings import POSTS_PER_PAGE
 from tumblelog.bookmarklet import generate_bookmarklink
