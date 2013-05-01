@@ -2,7 +2,7 @@ python-oembed==0.2.1
 Pillow
 django-extensions
 django
-django-jsonfield
+django-jsonfield==0.8.12
 html2text
 easy-thumbnails
 requests
